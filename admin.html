@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Yardline · Admin board</title>
+<meta name="description" content="Brokerage admin board for Yardline: order queue, spend by category, agent activity and locked brand templates.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* Soft Structuralism · Asymmetrical Bento — admin board twin of the storefront */
+:root{
+  --ground:oklch(0.9615 0.0054 274.97); --s1:oklch(1.0000 0 0); --s2:oklch(0.9819 0.0029 264.54); --s3:oklch(0.9342 0.0084 271.32);
+  --ink:oklch(0.1733 0.0154 266.68); --ink2:oklch(0.4198 0.0266 265.48); --ink3:oklch(0.5263 0.0256 263.09);
+  --accent-deep:oklch(0.4637 0.2255 268.72); --on-accent:oklch(1.0000 0 0); --on-ink:oklch(0.9641 0.0070 268.55);
+  --accent:oklch(0.4637 0.2255 268.72); --accent-soft:oklch(0.9458 0.0231 277.95);
+  --brass:oklch(0.5375 0.1032 77.26); --brass-soft:oklch(0.9566 0.0212 85.94);
+  --ok:oklch(0.4689 0.0988 160.15); --ok-soft:oklch(0.9443 0.0193 167.92); --warn:oklch(0.4924 0.1077 64.98); --warn-soft:oklch(0.9545 0.0238 73.61);
+  --ring:0 0 0 1px rgba(13,16,23,.07);
+  --shell:rgba(13,16,23,.045);
+  --gloss:inset 0 1px 1px rgba(255,255,255,.75);
+  --lift:0 1px 2px rgba(13,16,23,.04),0 18px 44px -26px rgba(13,16,23,.24);
+  --liftL:0 2px 6px rgba(13,16,23,.04),0 44px 90px -44px rgba(13,16,23,.32);
+  --r:30px; --rin:23px; --rs:20px; --rsi:14px;
+  --e:cubic-bezier(.32,.72,0,1);
+  --d:"Bricolage Grotesque","Noto Sans SC",system-ui,sans-serif;
+  --b:"Geist","Noto Sans SC",system-ui,sans-serif;
+  --m:"Geist Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:oklch(0.1587 0.0091 264.27); --s1:oklch(0.2091 0.0147 266.87); --s2:oklch(0.1903 0.0112 260.65); --s3:oklch(0.2561 0.0180 266.26);
+  --ink:oklch(0.9641 0.0070 268.55); --ink2:oklch(0.7772 0.0205 260.17); --ink3:oklch(0.6609 0.0246 260.70);
+  --accent:oklch(0.7054 0.1543 274.43); --accent-soft:oklch(0.2494 0.0516 274.14); --brass:oklch(0.7819 0.1029 78.34); --brass-soft:oklch(0.2570 0.0270 81.03);
+  --ok:oklch(0.7567 0.1155 163.07); --ok-soft:oklch(0.2471 0.0333 165.31); --warn:oklch(0.7658 0.1136 72.74); --warn-soft:oklch(0.2543 0.0264 76.27);
+  --ring:0 0 0 1px rgba(255,255,255,.09);
+  --shell:rgba(255,255,255,.05);
+  --gloss:inset 0 1px 1px rgba(255,255,255,.09);
+  --lift:0 1px 2px rgba(0,0,0,.4),0 18px 44px -26px rgba(0,0,0,.7);
+  --liftL:0 2px 6px rgba(0,0,0,.45),0 44px 90px -44px rgba(0,0,0,.8);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --ground:oklch(0.1587 0.0091 264.27); --s1:oklch(0.2091 0.0147 266.87); --s2:oklch(0.1903 0.0112 260.65); --s3:oklch(0.2561 0.0180 266.26);
+  --ink:oklch(0.9641 0.0070 268.55); --ink2:oklch(0.7772 0.0205 260.17); --ink3:oklch(0.6609 0.0246 260.70);
+  --accent:oklch(0.7054 0.1543 274.43); --accent-soft:oklch(0.2494 0.0516 274.14); --brass:oklch(0.7819 0.1029 78.34); --brass-soft:oklch(0.2570 0.0270 81.03);
+  --ok:oklch(0.7567 0.1155 163.07); --ok-soft:oklch(0.2471 0.0333 165.31); --warn:oklch(0.7658 0.1136 72.74); --warn-soft:oklch(0.2543 0.0264 76.27);
+  --ring:0 0 0 1px rgba(255,255,255,.09);
+  --shell:rgba(255,255,255,.05);
+  --gloss:inset 0 1px 1px rgba(255,255,255,.09);
+  --lift:0 1px 2px rgba(0,0,0,.4),0 18px 44px -26px rgba(0,0,0,.7);
+  --liftL:0 2px 6px rgba(0,0,0,.45),0 44px 90px -44px rgba(0,0,0,.8);
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--b);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+img{max-width:100%}[hidden]{display:none!important}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+h1,h2,h3,h4{margin:0;text-wrap:balance;font-family:var(--d);font-weight:700;letter-spacing:-.025em;line-height:1.04}
+p{margin:0}
+[id]{scroll-margin-top:118px}
+.skip{position:absolute;left:-9999px;top:0;z-index:90;background:var(--ink);color:var(--ground);padding:13px 22px;border-radius:0 0 16px 0;font-weight:600;text-decoration:none}
+.skip:focus{left:0}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:clamp(16px,4vw,44px)}
+.num{font-variant-numeric:tabular-nums}
+.d1{font-size:clamp(40px,6.4vw,82px);font-weight:800;line-height:.98}
+.d2{font-size:clamp(28px,3.6vw,46px)}
+.lede{color:var(--ink2);font-size:clamp(16px,1.5vw,18.5px);line-height:1.6}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--m);font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:7px 15px;border-radius:999px;box-shadow:var(--ring)}
+.eyebrow.br{color:var(--brass);background:var(--brass-soft)}
+
+.bz{background:var(--shell);box-shadow:var(--ring);border-radius:var(--r);padding:7px}
+.bz>.core{background:var(--s1);border-radius:var(--rin);box-shadow:var(--gloss),0 1px 2px rgba(13,16,23,.05);overflow:hidden}
+.bzs{background:var(--shell);box-shadow:var(--ring);border-radius:var(--rs);padding:6px}
+.bzs>.core{background:var(--s1);border-radius:var(--rsi);box-shadow:var(--gloss);overflow:hidden}
+
+.btn{display:inline-flex;align-items:center;gap:14px;padding:11px 11px 11px 26px;border:0;border-radius:999px;background:var(--ink);color:var(--ground);font-size:15.5px;font-weight:600;cursor:pointer;text-decoration:none;transition:transform .45s var(--e),background .45s var(--e),color .45s var(--e);box-shadow:var(--lift)}
+.btn .ic{width:36px;height:36px;border-radius:999px;background:rgba(255,255,255,.15);display:grid;place-items:center;transition:transform .55s var(--e);flex:none}
+.btn .ic svg{width:16px;height:16px}
+.btn:hover{background:var(--accent);color:#fff}
+.btn:hover .ic{transform:translate(4px,-1px) scale(1.06)}
+.btn:active{transform:scale(.98)}
+
+.nav{position:fixed;top:calc(env(safe-area-inset-top,0px) + 16px);left:50%;transform:translateX(-50%);z-index:60;width:max-content;max-width:calc(100% - 24px);
+  background:color-mix(in srgb,var(--s1) 74%,transparent);backdrop-filter:blur(22px) saturate(1.7);-webkit-backdrop-filter:blur(22px) saturate(1.7);
+  border-radius:999px;box-shadow:var(--ring),var(--lift);padding:8px 8px 8px 20px;display:flex;align-items:center;gap:8px}
+.brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink);margin-right:10px}
+.brand svg{width:19px;height:19px;flex:none}
+.brand b{font-family:var(--d);font-size:21px;font-weight:700;letter-spacing:-.02em}
+.nlinks{display:flex;gap:2px}
+.nlinks a{text-decoration:none;color:var(--ink2);font-size:14.5px;font-weight:500;padding:9px 15px;border-radius:999px;transition:background .35s var(--e),color .35s var(--e)}
+.nlinks a:hover{color:var(--ink);background:var(--shell)}
+.nlinks a.on{color:var(--s1);background:var(--ink)}
+.lang{display:flex;gap:2px;background:var(--shell);border-radius:999px;padding:3px}
+.lang button{border:0;background:none;padding:7px 13px;border-radius:999px;font-family:var(--m);font-size:13px;color:var(--ink3);cursor:pointer;transition:all .35s var(--e)}
+.lang button[aria-pressed="true"]{background:var(--s1);color:var(--ink);box-shadow:var(--ring)}
+.burger{display:none;width:44px;height:44px;border:0;border-radius:999px;background:var(--shell);cursor:pointer;position:relative}
+.burger i{position:absolute;left:13px;width:18px;height:1.6px;background:var(--ink);border-radius:2px;transition:transform .5s var(--e)}
+.burger i:nth-child(1){top:18px}.burger i:nth-child(2){top:25px}
+.burger[aria-expanded="true"] i:nth-child(1){transform:translateY(3.5px) rotate(45deg)}
+.burger[aria-expanded="true"] i:nth-child(2){transform:translateY(-3.5px) rotate(-45deg)}
+.sheet{position:fixed;inset:0;z-index:55;background:color-mix(in srgb,var(--ground) 84%,transparent);backdrop-filter:blur(30px) saturate(1.4);-webkit-backdrop-filter:blur(30px) saturate(1.4);display:grid;place-items:center}
+.sheet nav{display:grid;gap:8px;text-align:center}
+.sheet nav a{text-decoration:none;color:var(--ink);font-family:var(--d);font-size:clamp(30px,8vw,44px);font-weight:700;letter-spacing:-.03em;padding:8px;opacity:0;transform:translateY(22px);animation:rise .7s var(--e) forwards}
+.sheet nav a:nth-child(1){animation-delay:.05s}.sheet nav a:nth-child(2){animation-delay:.1s}
+.sheet nav a:nth-child(3){animation-delay:.15s}.sheet nav a:nth-child(4){animation-delay:.2s}
+@keyframes rise{to{opacity:1;transform:none}}
+
+.head{padding-top:clamp(118px,14vw,176px);padding-bottom:clamp(26px,3vw,40px);display:flex;justify-content:space-between;align-items:flex-end;gap:26px;flex-wrap:wrap}
+.head h1{margin:20px 0 14px}
+.head .lede{max-width:50ch}
+.period{display:grid;gap:4px;padding:16px 22px;font-family:var(--m);font-size:13px;color:var(--ink3)}
+.period b{font-family:var(--b);font-size:15px;color:var(--ink);font-weight:600}
+
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.bento>.bz,.bento>.bzs{display:grid}
+.bento>.bz>.core,.bento>.bzs>.core{height:100%}
+.c3{grid-column:span 3}.c5{grid-column:span 5}.c7{grid-column:span 7}.c12{grid-column:span 12}
+.cell{padding:clamp(22px,2.4vw,32px)}
+.kpi{padding:22px 24px 24px}
+.kpi dt{margin:0 0 12px;font-size:13.5px;color:var(--ink3)}
+.kpi dd{margin:0;font-family:var(--d);font-size:clamp(30px,3.4vw,44px);font-weight:700;letter-spacing:-.035em;line-height:1;font-variant-numeric:tabular-nums}
+.kpi dd i{font-style:normal;font-size:.46em;color:var(--ink3);letter-spacing:-.01em}
+.kpi small{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:13px;color:var(--ink3)}
+.kpi small b{color:var(--ok);background:var(--ok-soft);padding:3px 9px;border-radius:999px;font-family:var(--m);font-size:12.5px}
+
+.blkhead{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:24px}
+.blkhead h2{font-size:clamp(20px,2.1vw,26px)}
+.blkhead span{font-family:var(--m);font-size:13px;color:var(--ink3)}
+.chart{display:grid;gap:17px}
+.row b{display:flex;justify-content:space-between;gap:12px;font-size:14.5px;font-weight:500;margin-bottom:8px;color:var(--ink2)}
+.row b i{font-style:normal;font-family:var(--m);font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
+.track{height:12px;border-radius:999px;background:var(--s3);overflow:hidden}
+.fill{height:100%;border-radius:999px;background:var(--accent)}
+.fill.f2{background:color-mix(in srgb,var(--accent) 66%,var(--s3))}
+.fill.f3{background:var(--brass)}
+.fill.f4{background:color-mix(in srgb,var(--brass) 52%,var(--s3))}
+.axis{position:relative;height:26px;margin-top:10px;border-top:1px solid var(--s3)}
+.axis span{position:absolute;top:7px;transform:translateX(-50%);font-family:var(--m);font-size:13px;color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.axis span:first-child{transform:none}
+.note{margin-top:22px;font-size:13.5px;color:var(--ink3);line-height:1.7}
+
+.ag{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+.ag li{display:grid;grid-template-columns:1fr auto;gap:6px 12px}
+.ag .nm{font-size:15.5px;font-weight:600;letter-spacing:-.012em}
+.ag .vl{font-family:var(--m);font-size:14.5px;font-variant-numeric:tabular-nums}
+.ag .mt{font-size:13px;color:var(--ink3)}
+.ag .tk{grid-column:1/-1;height:6px;border-radius:999px;background:var(--s3);overflow:hidden}
+.ag .tk i{display:block;height:100%;border-radius:999px;background:var(--ink)}
+
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:780px}
+th{text-align:left;font-size:13px;font-weight:500;color:var(--ink3);padding:0 20px 14px;white-space:nowrap}
+td{padding:16px 20px;border-top:1px solid var(--s3);vertical-align:top}
+td.r{text-align:right;font-family:var(--m);font-variant-numeric:tabular-nums;font-size:14px}
+.ono{font-family:var(--m);font-size:13.5px;color:var(--ink3);white-space:nowrap}
+.who{font-weight:600;letter-spacing:-.012em}
+.addr{color:var(--ink3);font-size:13.5px;display:block;margin-top:3px}
+.what{color:var(--ink2);font-size:14px}
+.chip{display:inline-flex;align-items:center;gap:7px;font-size:13px;padding:5px 13px;border-radius:999px;white-space:nowrap;box-shadow:var(--ring)}
+.chip::before{content:"";width:6px;height:6px;border-radius:999px;background:currentColor}
+.c-new{color:var(--accent);background:var(--accent-soft)}
+.c-prod{color:var(--warn);background:var(--warn-soft)}
+.c-done{color:var(--ok);background:var(--ok-soft)}
+.c-ship{color:var(--ink3);background:var(--shell)}
+
+
+footer{background:var(--ink);color:var(--on-ink);border-radius:var(--r) var(--r) 0 0;padding-block:clamp(50px,6vw,78px) 32px;margin-top:clamp(50px,7vw,110px)}
+.flogo{font-family:var(--d);font-size:30px;font-weight:700;letter-spacing:-.03em;display:block;margin-bottom:12px}
+footer p{color:color-mix(in oklab,var(--on-ink) 70%,var(--ink));font-size:14.5px;line-height:1.7;max-width:64ch}
+footer a{color:var(--brass)}
+.legal{margin-top:34px;padding-top:24px;border-top:1px solid color-mix(in oklab,var(--on-ink) 15%,transparent);font-size:13px;color:color-mix(in oklab,var(--on-ink) 52%,var(--ink));line-height:1.8;max-width:none}
+
+html.js .rv{opacity:0;transform:translateY(52px);filter:blur(9px)}
+html.js .rv.in{opacity:1;transform:none;filter:none;transition:opacity .85s var(--e),transform .85s var(--e),filter .85s var(--e)}
+@media (prefers-reduced-motion:reduce){
+  html.js .rv,html.js .rv.in{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
+  .sheet nav a{animation:none;opacity:1;transform:none}
+  *{transition:none!important}
+}
+
+@media (max-width:1023px){
+  .c3{grid-column:span 6}.c5,.c7{grid-column:span 12}
+  .nlinks,.nav>.lang{display:none}
+  .burger{display:block}
+  .nav{padding:8px 8px 8px 18px}
+}
+@media (max-width:640px){.c3{grid-column:span 12}}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add("js")</script>
+
+<a class="skip" href="#main" data-i="skip">Skip to content</a>
+<header class="nav">
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5 21.5V2.5h13M5 7.4h13"/><rect x="8.4" y="10.6" width="8.6" height="6.6" rx="1.4"/></svg>
+    <b>Yardline</b></a>
+  <nav class="nlinks">
+    <a href="index.html" data-i="nav1">Store</a>
+    <a href="index.html#how" data-i="nav2">Process</a>
+    <a href="admin.html" class="on" data-i="nav4">Admin</a>
+  </nav>
+  <div class="lang" role="group" aria-label="Language">
+    <button id="l-en" aria-pressed="true">EN</button><button id="l-zh" aria-pressed="false">中文</button>
+  </div>
+  <button class="burger" id="burger" aria-expanded="false" aria-label="Menu"><i></i><i></i></button>
+</header>
+
+<div class="sheet" id="sheet" hidden><div>
+  <nav>
+    <a href="index.html" data-i="nav1">Store</a>
+    <a href="index.html#how" data-i="nav2">Process</a>
+    <a href="admin.html" data-x data-i="nav4">Admin</a>
+  </nav>
+  <div class="lang" style="display:flex;margin:34px auto 0;width:max-content">
+    <button id="l-en2" aria-pressed="true">EN</button><button id="l-zh2" aria-pressed="false">中文</button>
+  </div>
+</div></div>
+
+<main class="wrap" id="main">
+  <div class="head">
+    <div>
+      <span class="eyebrow" data-i="eb">Brokerage control</span>
+      <h1 class="d1" data-i="h1">The job board</h1>
+      <p class="lede" data-i="sub">What your agents ordered, what it cost, and where each job is in production.</p>
+    </div>
+    <div class="bzs"><div class="core period">
+      <b data-i="p1">Oct 1 – 23, 2026</b><span data-i="p2">14 agents · 1 office</span>
+    </div></div>
+  </div>
+
+  <dl class="bento" style="margin:0">
+    <div class="bzs c3 rv"><div class="core kpi"><dt data-i="k1">Orders this period</dt><dd>38</dd><small><b>+9</b> <span data-i="k1s">vs. September</span></small></div></div>
+    <div class="bzs c3 rv"><div class="core kpi"><dt data-i="k2">Marketing spend</dt><dd>$11,482</dd><small data-i="k2s">One statement</small></div></div>
+    <div class="bzs c3 rv"><div class="core kpi"><dt data-i="k3">Signs in the field</dt><dd>19</dd><small data-i="k3s">4 removals queued</small></div></div>
+    <div class="bzs c3 rv"><div class="core kpi"><dt data-i="k4">Avg. install time</dt><dd>31 <i data-i="k4u">hr</i></dd><small data-i="k4s">Target under 48</small></div></div>
+  </dl>
+
+  <div class="bento" style="margin-top:14px">
+    <section class="bz c7 rv"><div class="core cell">
+      <div class="blkhead"><h2 data-i="spH">Spend by category</h2><span data-i="spT">$11,482 total</span></div>
+      <div class="chart" id="chart"></div>
+      <div class="axis"><span>$0</span><span style="left:33.33%">$2,000</span><span style="left:66.67%">$4,000</span><span style="left:100%">$6,000</span></div>
+      <p class="note" data-i="spNote">Scale 0–$6,000. Signs and installs are service items and are not taxed.</p>
+    </div></section>
+
+    <section class="bz c5 rv"><div class="core cell">
+      <div class="blkhead"><h2 data-i="agH">Top agents</h2><span data-i="agT">By spend</span></div>
+      <ul class="ag" id="agents"></ul>
+    </div></section>
+
+    <section class="bz c12 rv"><div class="core cell" style="padding-inline:0">
+      <div class="blkhead" style="padding-inline:clamp(22px,2.4vw,32px)">
+        <h2 data-i="orH">Recent orders</h2><span data-i="orN">38 orders · 6 awaiting production</span></div>
+      <div class="scroll"><table>
+        <thead><tr>
+          <th data-i="th1">Job</th><th data-i="th2">Agent and listing</th><th data-i="th3">Items</th>
+          <th data-i="th4">Status</th><th class="r" data-i="th5">Total</th><th class="r" data-i="th6">Placed</th>
+        </tr></thead><tbody id="rows"></tbody>
+      </table></div>
+    </div></section>
+  </div>
+
+</main>
+
+<footer><div class="wrap">
+  <span class="flogo">Yardline</span>
+  <p><span data-i="fP">Marketing materials, signs and install services for real estate brokerages in the San Francisco Bay Area. </span><a href="index.html" data-i="fLink">Back to the store</a></p>
+  <p class="legal" data-i="legal">Yardline is a fictional brand built as a working product demo. Company name, contact details, pricing, orders, agent names and all figures on this page are illustrative sample data. No payments are processed and no data is collected. Built by Ryan Yan, a data analyst.</p>
+</div></footer>
+
+<script>
+const L={en:{
+ nav1:"Store",nav2:"Process",nav3:"Brokerages",nav4:"Admin",
+ eb:"Brokerage control",h1:"The job board",
+ sub:"What your agents ordered, what it cost, and where each job is in production.",
+ p1:"Oct 1 – 23, 2026",p2:"14 agents · 1 office",
+ k1:"Orders this period",k1s:"vs. September",k2:"Marketing spend",k2s:"One statement",
+ k3:"Signs in the field",k3s:"4 removals queued",k4:"Avg. install time",k4u:"hr",k4s:"Target under 48",
+ spH:"Spend by category",spT:"$11,482 total",
+ spNote:"Scale 0–$6,000. Signs and installs are service items and are not taxed.",
+ agH:"Top agents",agT:"By spend",
+ orH:"Recent orders",orN:"38 orders · 6 awaiting production",
+ th1:"Job",th2:"Agent and listing",th3:"Items",th4:"Status",th5:"Total",th6:"Placed",
+ tpEb:"Brand control",tpH:"Locked brand templates",
+ tpS:"Agents fill in listing details only. Logo, colors, type and layout are fixed by the office, so every piece matches.",
+ fP:"Marketing materials, signs and install services for real estate brokerages in the San Francisco Bay Area. ",
+ fLink:"Back to the store",
+ legal:"Yardline is a fictional brand built as a working product demo. Company name, contact details, pricing, orders, agent names and all figures on this page are illustrative sample data. No payments are processed and no data is collected. Built by Ryan Yan, a data analyst.",
+ cat:{signs:"Signs and installation",print:"Print",open:"Open house",brand:"Branded items"},
+ st:{new:"New",prod:"In production",done:"Installed",ship:"Shipped"},
+ orders:n=>n+" orders",locked:"Locked",rev:"Rev."
+},zh:{
+ nav1:"物料商店",nav2:"流程",nav3:"管理层",nav4:"后台看板",
+ eb:"公司管控后台",h1:"订单看板",
+ sub:"经纪人下了什么单、花了多少钱、每笔工单生产到哪一步。",
+ p1:"2026年10月1–23日",p2:"14 位经纪人 · 1 个办公室",
+ k1:"本期订单数",k1s:"较 9 月",k2:"物料总支出",k2s:"一张账单",
+ k3:"在挂招牌",k3s:"4 个待拆除",k4:"平均安装时长",k4u:"小时",k4s:"目标 48 小时内",
+ spH:"按类别支出",spT:"合计 $11,482",
+ spNote:"刻度 0–$6,000。招牌与安装属服务类项目，不计销售税。",
+ agH:"下单最多的经纪人",agT:"按支出排序",
+ orH:"最近订单",orN:"38 笔订单 · 6 笔待生产",
+ th1:"工单号",th2:"经纪人与房源",th3:"物料内容",th4:"状态",th5:"金额",th6:"下单日",
+ tpEb:"品牌管控",tpH:"锁定的品牌模板",
+ tpS:"经纪人只填写房源信息。Logo、配色、字体与版式由公司固定，所有物料风格统一。",
+ fP:"为旧金山湾区房地产公司提供市场物料、招牌与安装服务。",
+ fLink:"返回物料商店",
+ legal:"Yardline 是为产品演示而创建的虚构品牌。公司名称、联系方式、价格、订单、经纪人姓名及本页所有数字均为示例数据。本页面不处理任何付款，也不收集任何数据。Built by Ryan Yan, a data analyst.",
+ cat:{signs:"招牌与安装",print:"印刷品",open:"Open House",brand:"品牌周边"},
+ st:{new:"新工单",prod:"生产中",done:"已安装",ship:"已发出"},
+ orders:n=>n+" 笔订单",locked:"已锁定",rev:"版本"
+}};
+Object.assign(L.en,{skip:"Skip to content"});Object.assign(L.zh,{skip:"跳到主要内容"});
+let lang="en";
+const t=k=>L[lang][k];
+const SCALE=6000;
+const SPEND=[{k:"signs",v:5240,c:""},{k:"print",v:4310,c:"f2"},{k:"open",v:1215,c:"f3"},{k:"brand",v:717,c:"f4"}];
+const AGENTS=[{n:"Mei Chen",v:2180,o:7},{n:"Daniel Reyes",v:1845,o:5},{n:"Priya Raman",v:1420,o:6},
+ {n:"Aaron Walsh",v:1120,o:4},{n:"Sofia Marchetti",v:905,o:3}];
+const ORDERS=[
+ {no:"YL-2026-204417",a:"Mei Chen",ad:"1420 Laurel St, San Carlos",s:"prod",v:319,d:"Oct 21",dz:"10月21日",
+  en:"Listing Flyers ×100 · A-Frame ×2",zh:"房源传单 ×100 · A 字牌 ×2"},
+ {no:"YL-2026-204415",a:"Daniel Reyes",ad:"88 Crescent Dr, Palo Alto",s:"done",v:399,d:"Oct 20",dz:"10月20日",
+  en:"Luxury Post Installation",zh:"豪华立柱安装"},
+ {no:"YL-2026-204412",a:"Priya Raman",ad:"Office order · San Mateo",s:"ship",v:184,d:"Oct 20",dz:"10月20日",
+  en:"Business Cards ×500 · Notepads ×10",zh:"名片 ×500 · 便签本 ×10"},
+ {no:"YL-2026-204409",a:"Aaron Walsh",ad:"3301 Shasta Rd, Berkeley",s:"done",v:238,d:"Oct 18",dz:"10月18日",
+  en:"Single Post Install · Riders ×4",zh:"标准立柱安装 · 挂牌条 ×4"},
+ {no:"YL-2026-204406",a:"Mei Chen",ad:"712 Alameda de las Pulgas, Redwood City",s:"ship",v:129,d:"Oct 17",dz:"10月17日",
+  en:"Just Listed Postcards ×250",zh:"新上市明信片 ×250"},
+ {no:"YL-2026-204401",a:"Sofia Marchetti",ad:"2140 Vallejo St, San Francisco",s:"prod",v:318,d:"Oct 16",dz:"10月16日",
+  en:"Property Booklets ×50 · Luxury Cards ×100",zh:"房源画册 ×50 · 高端名片 ×100"},
+ {no:"YL-2026-204398",a:"Daniel Reyes",ad:"1902 Fremont Ave, Los Altos",s:"done",v:395,d:"Oct 15",dz:"10月15日",
+  en:"Open House Kit",zh:"Open House 套装"},
+ {no:"YL-2026-204395",a:"Priya Raman",ad:"455 Hamilton Ave, Campbell",s:"new",v:208,d:"Oct 14",dz:"10月14日",
+  en:"Directional Signs ×6 · Flyer Box",zh:"指路牌 ×6 · 传单盒"}];
+const money=n=>"$"+n.toLocaleString("en-US");
+const CLS={new:"c-new",prod:"c-prod",done:"c-done",ship:"c-ship"};
+
+function paint(){
+  document.querySelectorAll("[data-i]").forEach(el=>{const v=L[lang][el.dataset.i];if(typeof v==="string")el.textContent=v;});
+  document.getElementById("chart").innerHTML=SPEND.map(s=>
+    `<div class="row"><b><span>${t("cat")[s.k]}</span><i>${money(s.v)}</i></b>
+      <div class="track"><div class="fill ${s.c}" style="width:${(s.v/SCALE*100).toFixed(2)}%"></div></div></div>`).join("");
+  const max=AGENTS[0].v;
+  document.getElementById("agents").innerHTML=AGENTS.map(a=>
+    `<li><span class="nm">${a.n}</span><span class="vl">${money(a.v)}</span>
+      <span class="mt">${t("orders")(a.o)}</span><span></span>
+      <span class="tk"><i style="width:${(a.v/max*100).toFixed(1)}%"></i></span></li>`).join("");
+  document.getElementById("rows").innerHTML=ORDERS.map(o=>
+    `<tr><td class="ono">${o.no}</td>
+      <td><span class="who">${o.a}</span><span class="addr">${o.ad}</span></td>
+      <td class="what">${o[lang]}</td>
+      <td><span class="chip ${CLS[o.s]}">${t("st")[o.s]}</span></td>
+      <td class="r">${money(o.v)}</td>
+      <td class="r">${lang==="en"?o.d:o.dz}</td></tr>`).join("");
+  ["l-en","l-en2"].forEach(i=>{const el=document.getElementById(i);if(el)el.setAttribute("aria-pressed",lang==="en")});
+  ["l-zh","l-zh2"].forEach(i=>{const el=document.getElementById(i);if(el)el.setAttribute("aria-pressed",lang==="zh")});
+  document.documentElement.lang=lang==="en"?"en":"zh";
+}
+const sheet=document.getElementById("sheet"), burger=document.getElementById("burger");
+document.addEventListener("click",e=>{
+  if(e.target.closest("#l-en,#l-en2")){lang="en";save();paint();return;}
+  if(e.target.closest("#l-zh,#l-zh2")){lang="zh";save();paint();return;}
+  if(e.target.closest("#burger")){const open=burger.getAttribute("aria-expanded")==="true";
+    burger.setAttribute("aria-expanded",String(!open));sheet.hidden=open;document.body.style.overflow=open?"":"hidden";return;}
+  if(e.target.closest("[data-x]")||e.target===sheet){sheet.hidden=true;burger.setAttribute("aria-expanded","false");document.body.style.overflow="";}
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){sheet.hidden=true;burger.setAttribute("aria-expanded","false");document.body.style.overflow="";}});
+function save(){try{localStorage.setItem("yl-lang",lang)}catch(e){}}
+let io;
+if("IntersectionObserver" in window){
+  io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{rootMargin:"0px 0px -8% 0px"});
+  document.querySelectorAll(".rv").forEach(e=>io.observe(e));
+}else document.querySelectorAll(".rv").forEach(e=>e.classList.add("in"));
+setTimeout(()=>document.querySelectorAll(".rv").forEach(e=>e.classList.add("in")),1600);
+try{const s=localStorage.getItem("yl-lang");if(s==="zh"||s==="en")lang=s;}catch(e){}
+paint();
+</script>
+</body>
+</html>
